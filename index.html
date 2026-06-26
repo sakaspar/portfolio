@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hamza Saadi ; AI Integration Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0A0A0F;
+      --surface:   #12121A;
+      --card:      #1A1A28;
+      --border:    #2A2A40;
+      --violet:    #7C3AED;
+      --violet-lt: #9D5CF5;
+      --cyan:      #00D4FF;
+      --white:     #F0F0FF;
+      --muted:     #8888AA;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(124,58,237,0.15);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.1rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--violet-lt), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); font-size: 0.875rem; font-weight: 500;
+      text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--violet); color: #fff;
+      padding: 0.6rem 1.4rem; border-radius: 6px;
+      font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.02em;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta:hover { background: var(--violet-lt); box-shadow: 0 0 20px rgba(124,58,237,0.5); }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative; height: 100vh; min-height: 700px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    #neural-canvas {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      text-align: center; max-width: 900px; padding: 0 2rem;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 100px; padding: 0.4rem 1.1rem;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--violet-lt); margin-bottom: 2rem;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan); animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 700; line-height: 1.02;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.6rem;
+    }
+    .hero-name span {
+      background: linear-gradient(135deg, var(--violet-lt) 0%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400; color: var(--muted);
+      margin-bottom: 1.8rem; letter-spacing: -0.01em;
+    }
+    .hero-sub {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 620px; margin: 0 auto 2.8rem;
+      font-weight: 300; line-height: 1.75;
+    }
+    .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--violet), #5B21B6);
+      color: #fff; padding: 0.9rem 2.2rem; border-radius: 8px;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.01em;
+      border: none; cursor: pointer;
+      box-shadow: 0 0 30px rgba(124,58,237,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(124,58,237,0.6); }
+    .btn-ghost {
+      background: transparent; color: var(--white);
+      padding: 0.9rem 2.2rem; border-radius: 8px;
+      font-size: 0.95rem; font-weight: 500;
+      text-decoration: none; letter-spacing: 0.01em;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--violet); background: rgba(124,58,237,0.08); }
+
+    .hero-stats {
+      position: absolute; bottom: 3rem; left: 0; right: 0;
+      display: flex; justify-content: center; gap: 4rem; z-index: 1;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--white), var(--violet-lt));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 7rem 4rem; max-width: 1200px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--violet-lt);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+    .section-desc {
+      color: var(--muted); font-size: 1.05rem;
+      max-width: 560px; line-height: 1.8;
+    }
+
+    /* ─── SERVICES GRID ─── */
+    #services { border-top: 1px solid var(--border); }
+    .services-header { margin-bottom: 4rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 1.5rem;
+    }
+    .svc-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.2rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: default;
+    }
+    .svc-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .svc-card:hover { border-color: rgba(124,58,237,0.5); transform: translateY(-4px); }
+    .svc-card:hover::before { opacity: 1; }
+
+    .svc-card.span-8 { grid-column: span 8; }
+    .svc-card.span-4 { grid-column: span 4; }
+    .svc-card.span-6 { grid-column: span 6; }
+    .svc-card.span-12 { grid-column: span 12; }
+
+    .svc-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.4rem;
+    }
+    .svc-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem; font-weight: 600;
+      margin-bottom: 0.7rem; letter-spacing: -0.02em;
+    }
+    .svc-desc {
+      color: var(--muted); font-size: 0.9rem; line-height: 1.75;
+    }
+    .svc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
+    .tag {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25);
+      color: var(--violet-lt);
+    }
+    .tag.cyan {
+      background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.2);
+      color: var(--cyan);
+    }
+
+    /* ─── HOW I WORK ─── */
+    #process {
+      background: var(--surface);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    #process .inner { max-width: 1200px; margin: 0 auto; padding: 7rem 4rem; }
+    .process-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; margin-top: 4rem;
+    }
+    .process-step {
+      padding: 2rem; border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .process-step:last-child { border-right: none; }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 4rem; font-weight: 700; line-height: 1;
+      color: rgba(124,58,237,0.15); margin-bottom: 1rem;
+      letter-spacing: -0.04em;
+    }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 600;
+      margin-bottom: 0.6rem; letter-spacing: -0.01em;
+    }
+    .step-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.7; }
+
+    /* ─── LLM SECTION ─── */
+    #llm { border-top: 1px solid var(--border); }
+    .llm-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center; margin-top: 4rem;
+    }
+    .llm-visual {
+      position: relative; aspect-ratio: 1;
+      max-width: 440px;
+    }
+    .llm-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(124,58,237,0.2);
+      animation: spin linear infinite;
+    }
+    .llm-ring:nth-child(1) { inset: 0; animation-duration: 20s; }
+    .llm-ring:nth-child(2) { inset: 12%; animation-duration: 14s; animation-direction: reverse; border-color: rgba(0,212,255,0.15); }
+    .llm-ring:nth-child(3) { inset: 26%; animation-duration: 10s; border-color: rgba(124,58,237,0.3); }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .llm-core {
+      position: absolute; inset: 36%;
+      background: radial-gradient(circle, rgba(124,58,237,0.5) 0%, rgba(10,10,15,0) 70%);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .llm-dot {
+      position: absolute; width: 8px; height: 8px;
+      background: var(--cyan); border-radius: 50%;
+      top: 50%; left: 50%;
+      transform-origin: 0 0;
+      animation: orbit linear infinite;
+    }
+    .llm-dot:nth-child(4) { animation-duration: 6s; margin-left: 180px; margin-top: -4px; }
+    .llm-dot:nth-child(5) { animation-duration: 9s; margin-left: 130px; margin-top: -4px; background: var(--violet-lt); animation-direction: reverse; }
+    @keyframes orbit { from { transform: rotate(0deg) translateX(0); } to { transform: rotate(360deg) translateX(0); } }
+
+    .llm-points { display: flex; flex-direction: column; gap: 1.5rem; }
+    .llm-point {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .llm-point-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; margin-top: 2px;
+    }
+    .llm-point-text h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem;
+    }
+    .llm-point-text p { color: var(--muted); font-size: 0.85rem; line-height: 1.65; }
+
+    /* ─── TECH STACK ─── */
+    #stack { border-top: 1px solid var(--border); }
+    .stack-header { margin-bottom: 3rem; }
+    .stack-categories { display: flex; flex-direction: column; gap: 2rem; }
+    .stack-row { display: flex; align-items: flex-start; gap: 2rem; }
+    .stack-label {
+      width: 140px; flex-shrink: 0;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      padding-top: 0.4rem;
+    }
+    .stack-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 0.35rem 0.85rem;
+      font-size: 0.82rem; font-weight: 500; color: var(--white);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .pill:hover { border-color: var(--violet); background: rgba(124,58,237,0.08); }
+
+    /* ─── INDUSTRIES ─── */
+    #industries { border-top: 1px solid var(--border); }
+    .industries-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .industry-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.8rem;
+      transition: border-color 0.3s;
+    }
+    .industry-card:hover { border-color: rgba(0,212,255,0.3); }
+    .industry-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .industry-name {
+      font-family: var(--font-display);
+      font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem;
+    }
+    .industry-desc { color: var(--muted); font-size: 0.83rem; line-height: 1.65; }
+
+    /* ─── CTA ─── */
+    #contact {
+      background: var(--surface);
+      max-width: 100%;
+      border-top: 1px solid var(--border);
+    }
+    #contact .inner {
+      max-width: 1200px; margin: 0 auto; padding: 7rem 4rem;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .cta-glow {
+      position: relative; display: inline-block; margin-bottom: 3rem;
+    }
+    .cta-glow::before {
+      content: '';
+      position: absolute; inset: -60px;
+      background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 700; letter-spacing: -0.04em; line-height: 1.05;
+      margin-bottom: 1.2rem;
+    }
+    .cta-title .accent {
+      background: linear-gradient(135deg, var(--violet-lt), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .cta-sub { color: var(--muted); font-size: 1.05rem; margin-bottom: 2.5rem; max-width: 500px; }
+    .contact-links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .contact-link {
+      display: flex; align-items: center; gap: 0.5rem;
+      color: var(--white); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.75rem 1.5rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-link:hover { border-color: var(--violet); background: rgba(124,58,237,0.1); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-name {
+      font-family: var(--font-display); font-size: 0.9rem;
+      font-weight: 600; color: var(--muted);
+    }
+    .footer-copy { font-size: 0.8rem; color: var(--muted); }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .svc-card.span-8, .svc-card.span-4, .svc-card.span-6 { grid-column: span 1; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid var(--border); }
+      .llm-layout { grid-template-columns: 1fr; }
+      .llm-visual { display: none; }
+      .industries-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 2rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HS / AI</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#llm">Private LLMs</a></li>
+    <li><a href="#stack">Stack</a></li>
+  </ul>
+  <a href="mailto:saadi.hamza@proton.me" class="nav-cta">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="neural-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Available for new engagements
+    </div>
+    <h1 class="hero-name">
+      Hamza <span>Saadi</span>
+    </h1>
+    <p class="hero-title">AI Integration Engineer &amp; Infrastructure Architect</p>
+    <p class="hero-sub">
+      I audit your company's infrastructure, then wire AI directly into your operations ; from ERP automation and BI pipelines to private, on-premises LLMs your team can actually use.
+    </p>
+    <div class="hero-ctas">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#contact" class="btn-ghost">Let's talk</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years SRE / DevOps</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">99.99%</div>
+      <div class="stat-label">Uptime delivered</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">60%</div>
+      <div class="stat-label">MTTR reduction</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Data sovereignty</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header fade-up">
+    <p class="section-eyebrow">What I do</p>
+    <h2 class="section-title">AI that integrates with<br>how your company actually works</h2>
+    <p class="section-desc">No ripped-out workflows. No black-box APIs. I go in, understand the system, and deploy AI where it creates compounding value.</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="svc-card span-8 fade-up">
+      <div class="svc-icon">🔍</div>
+      <h3 class="svc-title">Infrastructure Audit &amp; AI Readiness Assessment</h3>
+      <p class="svc-desc">Before touching anything, I map your full stack ; cloud, on-prem, data flows, team workflows, and integration points. I identify where AI creates the highest leverage, and where it would create technical debt. You get a prioritized roadmap, not a sales pitch.</p>
+      <div class="svc-tags">
+        <span class="tag">Cloud Architecture</span>
+        <span class="tag">Data Flow Mapping</span>
+        <span class="tag">Gap Analysis</span>
+        <span class="tag">ROI Modeling</span>
+      </div>
+    </div>
+
+    <div class="svc-card span-4 fade-up">
+      <div class="svc-icon">⚡</div>
+      <h3 class="svc-title">ERP AI Automation</h3>
+      <p class="svc-desc">Plug AI into your ERP to handle procurement suggestions, anomaly detection in financials, inventory forecasting, and supplier risk scoring ; all without replacing your existing stack.</p>
+      <div class="svc-tags">
+        <span class="tag">SAP</span>
+        <span class="tag">Odoo</span>
+        <span class="tag">Oracle</span>
+        <span class="tag cyan">Automation</span>
+      </div>
+    </div>
+
+    <div class="svc-card span-4 fade-up">
+      <div class="svc-icon">📊</div>
+      <h3 class="svc-title">BI &amp; Analytics Intelligence</h3>
+      <p class="svc-desc">Transform your dashboards from static reports into AI-powered decision engines. Natural language queries, predictive analytics, and automated insight generation ; layered onto your existing BI tools.</p>
+      <div class="svc-tags">
+        <span class="tag">Power BI</span>
+        <span class="tag">Grafana</span>
+        <span class="tag cyan">NL Queries</span>
+      </div>
+    </div>
+
+    <div class="svc-card span-8 fade-up">
+      <div class="svc-icon">🤖</div>
+      <h3 class="svc-title">Internal AI Assistants &amp; Employee Chatbots</h3>
+      <p class="svc-desc">Deploy intelligent assistants your team actually wants to use. Employees can request leave, check HR policies, schedule meetings, submit tickets, access company knowledge, and get onboarding guidance ; through a single conversational interface connected to your internal systems. Every response is grounded in your own data, not generic internet knowledge.</p>
+      <div class="svc-tags">
+        <span class="tag">HR Integration</span>
+        <span class="tag">Leave Management</span>
+        <span class="tag">IT Helpdesk</span>
+        <span class="tag">Knowledge Base</span>
+        <span class="tag cyan">RAG</span>
+        <span class="tag cyan">Multi-system</span>
+      </div>
+    </div>
+
+    <div class="svc-card span-6 fade-up">
+      <div class="svc-icon">🔗</div>
+      <h3 class="svc-title">Workflow &amp; Process Automation</h3>
+      <p class="svc-desc">Connect your existing tools ; CRMs, ticketing systems, email, messaging platforms ; with AI agents that handle routing, summarization, triage, and handoffs automatically. Remove the human from every repeatable loop.</p>
+      <div class="svc-tags">
+        <span class="tag">API Integration</span>
+        <span class="tag">Agent Pipelines</span>
+        <span class="tag cyan">N8N</span>
+        <span class="tag cyan">Custom Agents</span>
+      </div>
+    </div>
+
+    <div class="svc-card span-6 fade-up">
+      <div class="svc-icon">🏗️</div>
+      <h3 class="svc-title">Observability &amp; AI System Monitoring</h3>
+      <p class="svc-desc">Production AI systems need the same rigor as mission-critical infrastructure. I instrument your AI deployments with full observability ; latency tracking, hallucination rate monitoring, model drift detection, and alerting.</p>
+      <div class="svc-tags">
+        <span class="tag">Prometheus</span>
+        <span class="tag">Grafana</span>
+        <span class="tag">Alerting</span>
+        <span class="tag cyan">LLM Metrics</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<div id="process">
+  <div class="inner">
+    <p class="section-eyebrow fade-up">How I work</p>
+    <h2 class="section-title fade-up">From discovery to<br>production in weeks, not months</h2>
+    <div class="process-grid">
+      <div class="process-step fade-up">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Audit &amp; Discovery</h3>
+        <p class="step-desc">Deep dive into your infrastructure, data flows, tools, and team workflows. I identify integration points and quantify the opportunity.</p>
+      </div>
+      <div class="process-step fade-up">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Design &amp; Architecture</h3>
+        <p class="step-desc">I design the AI integration layer ; model selection, data pipeline design, security model, and deployment topology ; tailored to your constraints.</p>
+      </div>
+      <div class="process-step fade-up">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Build &amp; Fine-tune</h3>
+        <p class="step-desc">Development, integration, and ; where needed ; fine-tuning of open-source LLMs on your proprietary data. Your model, your servers.</p>
+      </div>
+      <div class="process-step fade-up">
+        <div class="step-num">04</div>
+        <h3 class="step-title">Deploy &amp; Monitor</h3>
+        <p class="step-desc">Production deployment with full observability, alerting, and a handoff package so your team owns what was built. Ongoing support available.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVATE LLMs -->
+<section id="llm">
+  <div class="llm-layout">
+    <div class="fade-up">
+      <p class="section-eyebrow">Private LLM Fine-tuning</p>
+      <h2 class="section-title">Your data never<br>leaves your servers.</h2>
+      <p class="section-desc" style="margin-bottom: 2.5rem;">
+        Most AI vendors want access to your data. I take the opposite approach: fine-tune open-source models on your proprietary knowledge and deploy them entirely within your infrastructure.
+      </p>
+      <div class="llm-points">
+        <div class="llm-point">
+          <div class="llm-point-icon">🎯</div>
+          <div class="llm-point-text">
+            <h4>Use-case specific fine-tuning</h4>
+            <p>Each model is trained on your domain ; whether that's legal documents, internal SOPs, financial data, or technical manuals. The result is a model that understands your business, not the internet.</p>
+          </div>
+        </div>
+        <div class="llm-point">
+          <div class="llm-point-icon">🔒</div>
+          <div class="llm-point-text">
+            <h4>Full data sovereignty</h4>
+            <p>Your training data, your model weights, your hardware. Zero exposure to external APIs. Compliant with GDPR, internal data policies, and industry-specific regulations from day one.</p>
+          </div>
+        </div>
+        <div class="llm-point">
+          <div class="llm-point-icon">⚙️</div>
+          <div class="llm-point-text">
+            <h4>Open-source model selection</h4>
+            <p>I select and fine-tune from the best open-source models ; Llama, Mistral, Qwen, Gemma ; based on your compute budget, latency requirements, and task type.</p>
+          </div>
+        </div>
+        <div class="llm-point">
+          <div class="llm-point-icon">📈</div>
+          <div class="llm-point-text">
+            <h4>Continuous improvement pipeline</h4>
+            <p>Fine-tuning isn't a one-time event. I set up feedback loops so the model gets better as your team uses it, with scheduled re-training on new data.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="llm-visual fade-up">
+      <div class="llm-ring"></div>
+      <div class="llm-ring"></div>
+      <div class="llm-ring"></div>
+      <div class="llm-core">🧠</div>
+      <div class="llm-dot"></div>
+      <div class="llm-dot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="stack-header fade-up">
+    <p class="section-eyebrow">Technical Stack</p>
+    <h2 class="section-title">Built on proven infrastructure,<br>extended with AI</h2>
+  </div>
+  <div class="stack-categories fade-up">
+    <div class="stack-row">
+      <div class="stack-label">AI / LLM</div>
+      <div class="stack-pills">
+        <span class="pill">LangChain</span>
+        <span class="pill">LlamaIndex</span>
+        <span class="pill">Ollama</span>
+        <span class="pill">vLLM</span>
+        <span class="pill">HuggingFace</span>
+        <span class="pill">OpenRouter</span>
+        <span class="pill">RAG Pipelines</span>
+        <span class="pill">Fine-tuning (LoRA/QLoRA)</span>
+        <span class="pill">Llama 3</span>
+        <span class="pill">Mistral</span>
+        <span class="pill">Qwen</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-label">Cloud &amp; Infra</div>
+      <div class="stack-pills">
+        <span class="pill">Azure</span>
+        <span class="pill">AWS</span>
+        <span class="pill">Kubernetes</span>
+        <span class="pill">Docker</span>
+        <span class="pill">Terraform</span>
+        <span class="pill">Ansible</span>
+        <span class="pill">Helm</span>
+        <span class="pill">ArgoCD</span>
+        <span class="pill">FluxCD</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-label">Observability</div>
+      <div class="stack-pills">
+        <span class="pill">Prometheus</span>
+        <span class="pill">Grafana</span>
+        <span class="pill">Elasticsearch</span>
+        <span class="pill">Kibana</span>
+        <span class="pill">DataDog</span>
+        <span class="pill">AlertManager</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-label">Languages</div>
+      <div class="stack-pills">
+        <span class="pill">Python</span>
+        <span class="pill">JavaScript / Node.js</span>
+        <span class="pill">Bash</span>
+        <span class="pill">Go</span>
+        <span class="pill">SQL</span>
+      </div>
+    </div>
+    <div class="stack-row">
+      <div class="stack-label">Integrations</div>
+      <div class="stack-pills">
+        <span class="pill">REST &amp; GraphQL APIs</span>
+        <span class="pill">Webhooks</span>
+        <span class="pill">Keycloak SSO</span>
+        <span class="pill">External Secrets</span>
+        <span class="pill">PostgreSQL</span>
+        <span class="pill">MongoDB</span>
+        <span class="pill">MySQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section id="industries" style="padding-top: 0;">
+  <p class="section-eyebrow fade-up">Industry focus</p>
+  <h2 class="section-title fade-up">Sectors I work in</h2>
+  <div class="industries-grid">
+    <div class="industry-card fade-up">
+      <div class="industry-icon">🏦</div>
+      <h3 class="industry-name">Finance &amp; Fintech</h3>
+      <p class="industry-desc">AI-powered risk scoring, fraud detection pipelines, automated reporting, and compliance monitoring ; with strict data residency requirements met.</p>
+    </div>
+    <div class="industry-card fade-up">
+      <div class="industry-icon">🏭</div>
+      <h3 class="industry-name">Manufacturing &amp; Logistics</h3>
+      <p class="industry-desc">Predictive maintenance, supply chain optimization, ERP workflow automation, and real-time operational intelligence dashboards.</p>
+    </div>
+    <div class="industry-card fade-up">
+      <div class="industry-icon">🏥</div>
+      <h3 class="industry-name">Healthcare &amp; Medical</h3>
+      <p class="industry-desc">Secure, on-premises LLMs for clinical documentation, internal knowledge retrieval, and administrative automation ; fully GDPR compliant.</p>
+    </div>
+    <div class="industry-card fade-up">
+      <div class="industry-icon">🛒</div>
+      <h3 class="industry-name">Retail &amp; E-commerce</h3>
+      <p class="industry-desc">Demand forecasting, personalized recommendation engines, automated customer support triage, and inventory intelligence systems.</p>
+    </div>
+    <div class="industry-card fade-up">
+      <div class="industry-icon">⚖️</div>
+      <h3 class="industry-name">Legal &amp; Professional Services</h3>
+      <p class="industry-desc">Private document analysis, contract review assistance, and internal knowledge assistants ; trained on firm-specific materials, never leaving your network.</p>
+    </div>
+    <div class="industry-card fade-up">
+      <div class="industry-icon">🚀</div>
+      <h3 class="industry-name">Startups &amp; Scale-ups</h3>
+      <p class="industry-desc">Move fast without breaking things. I bring enterprise-grade AI integration methodology to lean teams who want to punch above their weight.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div id="contact">
+  <div class="inner">
+    <div class="cta-glow fade-up">
+      <h2 class="cta-title">Ready to make your<br>infrastructure <span class="accent">intelligent</span>?</h2>
+    </div>
+    <p class="cta-sub">Let's audit your setup and find where AI creates the most leverage for your team.</p>
+    <div class="contact-links">
+      <a href="mailto:saadi.hamza@proton.me" class="contact-link">
+        <span>✉️</span> saadi.hamza@proton.me
+      </a>
+      <a href="tel:+21650211134" class="contact-link">
+        <span>📞</span> +216 50 211 134
+      </a>
+      <a href="https://github.com/sakaspar" class="contact-link" target="_blank">
+        <span>💻</span> github.com/sakaspar
+      </a>
+      <a href="https://www.linkedin.com/in/hamza-saadi" class="contact-link" target="_blank">
+        <span>🔗</span> LinkedIn
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Hamza Saadi ; AI Integration Engineer</div>
+  <div class="footer-copy">Based in Tunisia · Available globally · &copy; 2025</div>
+</footer>
+
+<script>
+/* ─── NEURAL CANVAS ─── */
+const canvas = document.getElementById('neural-canvas');
+const ctx = canvas.getContext('2d');
+let nodes = [], W, H, animId;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initNodes(n = 70) {
+  nodes = Array.from({length: n}, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.5,
+    vy: (Math.random() - 0.5) * 0.5,
+    r: Math.random() * 2 + 1,
+    pulse: Math.random() * Math.PI * 2
+  }));
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const t = Date.now() * 0.001;
+
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+    n.pulse += 0.02;
+    const alpha = 0.4 + 0.3 * Math.sin(n.pulse);
+
+    // Draw node
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(124, 58, 237, ${alpha})`;
+    ctx.fill();
+  });
+
+  // Draw edges
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 140) {
+        const alpha = (1 - dist / 140) * 0.35;
+        const grad = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
+        grad.addColorStop(0, `rgba(124,58,237,${alpha})`);
+        grad.addColorStop(1, `rgba(0,212,255,${alpha * 0.5})`);
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+    }
+  }
+
+  animId = requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', () => { resize(); initNodes(); });
+resize(); initNodes(); draw();
+
+/* ─── FADE-UP OBSERVER ─── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* ─── SCROLL GLOW: ring in LLM section ─── */
+// rings already animated via CSS keyframes
+</script>
+</body>
+</html>
